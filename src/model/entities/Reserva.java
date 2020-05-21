@@ -8,6 +8,7 @@ package model.entities;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import model.Exception.DominioExcecao;
 
 /**
  *
@@ -22,6 +23,10 @@ public class Reserva {
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
     public Reserva(Integer quartoNumero, Date entrada, Date saida) {
+        
+             if (!saida.after(entrada)) {
+                throw new DominioExcecao("verifique a data de saita tem que ser depois da data de entrada");
+            } 
         this.quartoNumero = quartoNumero;
         this.entrada = entrada;
         this.saida = saida;
@@ -51,18 +56,17 @@ public class Reserva {
         return TimeUnit.DAYS.convert(diferenca, TimeUnit.MILLISECONDS);
 
     }
-    public String  updateDate(Date entrada, Date saida){
+    public void  updateDate(Date entrada, Date saida){
         
         Date now = new Date();
             if (entrada.before(now) || saida.before(now)) {
-                return "Erro na atualização da reserva: deve ser para datas futuras";
+                throw new DominioExcecao ("Erro na atualização da reserva: deve ser para datas futuras");
             } 
             if (!saida.after(entrada)) {
-                return "verifique a data de saita tem que ser depois da data de entrada";
+                throw new DominioExcecao("verifique a data de saita tem que ser depois da data de entrada");
             } 
         this.entrada = entrada;
-        this.saida = saida;  
-        return null;
+        this.saida = saida;          
     }
 
     @Override
