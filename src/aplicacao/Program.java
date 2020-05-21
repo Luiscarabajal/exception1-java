@@ -50,19 +50,13 @@ public class Program {
             System.out.println("Entre com data de saida no formato dd/MM/yyyy");
             saida = sdf.parse(sc.next());
 
-            Date now = new Date();
-
-            if (entrada.before(now) || saida.before(now)) {
-                System.out.println("Erro na atualização da reserva: verifique a data de saita e entrada da sua primeira entrada");
-            } else if (!saida.after(entrada)) {
-                System.out.println("Erro na reserva: verifique a data de saita tem que ser depois da data de entrada");
-            } else {
-                reserva.updateDate(entrada, saida);
+            String error = reserva.updateDate(entrada, saida);
+            if (error != null) {
+                System.out.println("erro na reserva " + error);
+            } 
+            else {
+                System.out.println("Reserva " + reserva);
             }
-            
-
-            System.out.println("Reserva " + reserva);
-
         }
     }
 
